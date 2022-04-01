@@ -1,0 +1,55 @@
+﻿@page
+@model LoginModel
+<link rel="stylesheet" href="~/admin/css/style.min.css">
+<div class="layer"></div>
+<main class="page-center">
+  <article class="sign-up">
+    <h1 class="sign-up__title">Welcome back!</h1>
+    <p class="sign-up__subtitle">Sign in to your account to continue</p>
+    <form id="account" method="post" class="sign-up-form form">
+        <label class="form-label-wrapper">
+            <label asp-for="Input.Email" class="form-label"></label>
+            <input asp-for="Input.Email" class="form-input" autocomplete="username" aria-required="true" placeholder="Enter your email"/>
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </label>
+        <label class="form-label-wrapper">
+            <label asp-for="Input.Password" class="form-label"></label>
+            <input asp-for="Input.Password" class="form-input" autocomplete="current-password" aria-required="true" placeholder="Enter your password"/>
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </label>
+        <a class="link-info forget-link" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+        <label asp-for="Input.RememberMe" class="form-checkbox-wrapper">
+          <input class="form-checkbox" asp-for="Input.RememberMe" />
+          @Html.DisplayNameFor(m => m.Input.RememberMe)
+        </label>
+        <button id="login-submit" type="submit" class="form-btn primary-default-btn transparent-btn">Sign in</button>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <hr/>
+        @{
+            if ((Model.ExternalLogins?.Count ?? 0) == 0)
+            {
+                <a class="form-btn secondary-default-btn transparent-btn" href="#"><img src="https://img.icons8.com/color/16/000000/google-logo.png"/>&nbsp; Signup Using Google - Dummy</a>
+            }
+            else
+            {
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                            }
+                        </p>
+                    </div>
+                </form>
+            }
+            }
+      
+    </form>
+    
+  </article>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
