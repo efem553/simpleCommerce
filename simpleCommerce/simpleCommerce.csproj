@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\simpleCommerce_DataAccess\simpleCommerce_DataAccess.csproj" />
+    <ProjectReference Include="..\simpleCommerce_Utility\simpleCommerce_Utility.csproj" />
   </ItemGroup>
 
 </Project>

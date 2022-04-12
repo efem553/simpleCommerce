@@ -17,8 +17,8 @@ namespace simpleCommerce_Models
 
         [Required(ErrorMessage = "You need to add a picture at least for Product")]
         public Guid PictureId { get; set; }
-        [ForeignKey("PictureId")]
-        public IList<Picture>? Pictures { get; set; }
+        //[ForeignKey("PictureId")]
+        //public IList<Image>? Pictures { get; set; }
 
     }
 }

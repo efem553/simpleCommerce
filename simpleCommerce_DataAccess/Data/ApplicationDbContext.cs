@@ -11,6 +11,7 @@ namespace simpleCommerce_DataAccess.Data
 
         }
         public DbSet<Product> Product { get; set; }
-        public DbSet<Picture> Picture { get; set; }
+        public DbSet<Property> Property { get; set; }
+        public DbSet<Category> Category { get; set; }
     }
 }
