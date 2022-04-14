@@ -4,7 +4,7 @@ namespace simpleCommerce_DataAccess.Repository.Interface
 {
     public interface IRepository<T> where T : class
     {
-        T Find(int id);
+        T Find(Guid guid);
 
         IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null,
                               Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using simpleCommerce_DataAccess.Data;
 
@@ -11,9 +12,10 @@ using simpleCommerce_DataAccess.Data;
 namespace simpleCommerce_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220413122538_ProductIsInStockAdded")]
+    partial class ProductIsInStockAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,9 +244,8 @@ namespace simpleCommerce_DataAccess.Migrations
                     b.Property<Guid>("PictureId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("ImageData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Base64")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PictureId");
 
@@ -288,41 +289,12 @@ namespace simpleCommerce_DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PropertyId");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("Property");
-                });
-
-            modelBuilder.Entity("simpleCommerce_Models.Tag", b =>
-                {
-                    b.Property<Guid>("TagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FilterName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("TagId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -385,27 +357,9 @@ namespace simpleCommerce_DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("simpleCommerce_Models.Property", b =>
-                {
-                    b.HasOne("simpleCommerce_Models.Product", null)
-                        .WithMany("Properties")
-                        .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("simpleCommerce_Models.Tag", b =>
-                {
-                    b.HasOne("simpleCommerce_Models.Product", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("simpleCommerce_Models.Product", b =>
                 {
                     b.Navigation("Pictures");
-
-                    b.Navigation("Properties");
-
-                    b.Navigation("Tags");
                 });
 #pragma warning restore 612, 618
         }

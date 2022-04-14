@@ -36,9 +36,9 @@ namespace simpleCommerce_DataAccess.Repository
             dbSet.Remove(entity);
         }
 
-        public T Find(int id)
+        public T Find(Guid guid)
         {
-            return dbSet.Find(id);
+            return dbSet.Find(guid);
         }
 
         public T FirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool isTracking = true)

@@ -10,8 +10,10 @@ namespace simpleCommerce_DataAccess.Data
         {
 
         }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<Property> Property { get; set; }
-        public DbSet<Category> Category { get; set; }
+        public DbSet<Product> Product { get; set; } = default!;
+        public DbSet<Category> Category { get; set; } = default!;
+        public DbSet<Picture> Picture { get; set; } = default!;
+        public DbSet<Property> Property { get; set; } = default!;
+        public DbSet<Tag> Tag { get; set; } = default!;
     }
 }

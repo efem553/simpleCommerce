@@ -16,5 +16,17 @@ namespace simpleCommerce.Controllers
             
             return View();
         }
+
+        public IActionResult CreateProduct()
+        {
+                return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateProduct(Product product)
+        {
+            return View();
+        }
     }
 }

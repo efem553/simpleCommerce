@@ -15,10 +15,13 @@ namespace simpleCommerce_Models
         [Required(ErrorMessage = "Price is required for Product")]
         public decimal? Price { get; set; }
 
-        [Required(ErrorMessage = "You need to add a picture at least for Product")]
+        public bool IsInStock { get; set; }
         public Guid PictureId { get; set; }
-        //[ForeignKey("PictureId")]
-        //public IList<Image>? Pictures { get; set; }
+        [ForeignKey("PictureId")]
+        public List<Picture>? Pictures { get; set; }
+        public List<Property>? Properties  { get; set; }
+        public List<Tag>? Tags { get; set; }
+
 
     }
 }
