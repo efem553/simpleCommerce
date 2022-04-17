@@ -1,40 +1,33 @@
-﻿@{
+﻿@model simpleCommerce_Models.Category
+@{
     ViewData["Title"] = "Category";
     Layout = "~/Views/Shared/_AdminPanelLayout.cshtml";
 }
 
 <main class="main users chart-page" id="skip-target">
-      <div class="container">
+    <div class="container">
         <h2 class="main-title">Categories</h2>
-        
-        <div class="row">
-          <div class="container-fluid">
-            <div class="" >
-                <a class="addButton" asp-controller="Category" asp-action="Add" >+ Add New</a>
+
+        <div class="container-fluid">
+            <partial name="_AddPartial" model="Model" />
+                <div class="users-table table-wrapper white-block container-fluid">
+                    <table id="categoryTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Filter Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
-            <div class="users-table table-wrapper white-block container-fluid">
-              <table id="categoryTable" class="display">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Filter Name</th>
-                <th></th>
-            </tr>
-        </thead>
-    </table>
-            </div>
-            
-          </div>
-          
         </div>
-      </div>
+
 </main>
 
 @section Scripts{
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-@*    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>*@
-    <script src="~/js/categoryPage.js"/>
-    <script type="text/javascript">
-
-    </script>
+    @*    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>*@
+    <script src="~/js/categoryPage.js" ></script>
 }

@@ -33,12 +33,28 @@ namespace simpleCommerce.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Edit(Guid CategoryId)
+        public IActionResult Edit(string id)
         {
-            Category category;
-            category=_catRepo.Find(CategoryId);
+            if (!String.IsNullOrEmpty(id))
+            {
+                Category category;
+                category = _catRepo.Find(Guid.Parse(id));
 
-            return View("Edit", category);
+                return View("Index", category);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _catRepo.Update(category);
+                _catRepo.Save();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         #region API CALLS

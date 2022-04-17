@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"];
+    var action = ViewContext.RouteData.Values["Action"];
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -24,12 +29,60 @@
       color: black; 
       border: 2px solid #008CBA;
       border-radius: 25px;
-      width:50px !important;
+      width:10%;
+      height:10%;
+      text-align:center;
     }
 
     .addButton:hover {
       background-color: #008CBA;
       color: white;
+    }
+    .custom-btn {
+      width: 130px;
+      height: 40px;
+      padding: 10px 25px;
+      border: 2px solid #000;
+      font-family: 'Lato', sans-serif;
+      font-weight: 500;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+    }
+    /* main button */
+    .btn-main {
+      transition: all 0.3s ease;
+    }
+    .btn-main:hover {
+       box-shadow:
+       -7px -7px 20px 0px #fff9,
+       -4px -4px 5px 0px #fff9,
+       7px 7px 20px 0px #0002,
+       4px 4px 5px 0px #0001;
+       border: 2px solid #008CBA;
+    }
+
+    .btn-main:active {
+      top: 2px;
+    }
+    .div-container {
+    width:100%;
+    border:1px solid #d3d3d3;
+    }
+    .div-container div {
+        width:100%;
+    }
+    .div-container .header {
+        background-color:#d3d3d3;
+        padding: 2px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .div-container .content {
+        display: none;
+        padding : 5px;
     }
   </style>
 </head>
@@ -60,10 +113,10 @@
         <div class="sidebar-body">
             <ul class="sidebar-body-menu">
                 <li>
-                    <a class="active" href="/"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+                    <a id="Admin-Index" asp-controller="Admin" asp-action="Index"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
                 </li>
                 <li>
-                    <a class="show-cat-btn" href="##">
+                    <a id="Product-Index" class="show-cat-btn">
                         <span class="icon document" aria-hidden="true"></span>Posts
                         <span class="category__btn transparent-btn" title="Open list">
                             <span class="sr-only">Open list</span>
@@ -72,15 +125,15 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="posts.html">All Posts</a>
+                            <a asp-controller="Product" asp-action="Index">All Products</a>
                         </li>
                         <li>
-                            <a href="new-post.html">Add new post</a>
+                            <a asp-controller="Product" asp-action="Add">Add New Product</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a class="show-cat-btn" href="##">
+                    <a id="Category-Index" class="show-cat-btn" href="##">
                         <span class="icon folder" aria-hidden="true"></span>Categories
                         <span class="category__btn transparent-btn" title="Open list">
                             <span class="sr-only">Open list</span>
@@ -89,7 +142,10 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="categories.html">All categories</a>
+                            <a asp-controller="Category" asp-action="Index">All Categories</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Category" asp-action="Add">Add new Category</a>
                         </li>
                     </ul>
                 </li>
@@ -316,6 +372,9 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript">
+$("a#@(ViewContext.RouteData.Values["Controller"])-@(ViewContext.RouteData.Values["Action"])").addClass("active");
+</script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 

@@ -6,15 +6,15 @@ namespace simpleCommerce_DataAccess.Repository.Interface
     {
         T Find(Guid guid);
 
-        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null,
-                              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-                              string includeProperties = null,
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = default!,
+                              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = default!,
+                              string includeProperties = default!,
                               bool isTracking = true
             );
 
 
-        T FirstOrDefault(Expression<Func<T, bool>> filter = null,
-                         string includeProperties = null,
+        T FirstOrDefault(Expression<Func<T, bool>> filter = default!,
+                         string includeProperties = default!,
                          bool isTracking = true
             );
 
