@@ -1,9 +1,10 @@
-﻿$(document).ready(function () {
+﻿var datatable;
+$(document).ready(function () {
     loadDataTable("GetCategoryList");
 });
 
 function loadDataTable(url) {
-    $("#categoryTable").DataTable({
+    datatable=$("#categoryTable").DataTable({
         "ajax": {
             "url": "/Category/" + url
         },
@@ -11,12 +12,16 @@ function loadDataTable(url) {
             { "data": "name", "width": "40%" },
             { "data": "filterName", "width": "40%" },
             {
-                "data": "categoryId",
+                "data": "id",
                 "render": function (data) {
                     return `
-                    <div class="text-center">
-                        <a href="~/Category/Edit/${data}" class="addButton text-white" style="cursor:poiner">
-                            <i class="fas fa-edit"></i>
+                    <div class="row">
+                        <a href="/Category/Edit?id=${data}"  class="badge-pending" style="cursor:pointer; margin-right:2%;">
+                            Edit
+                        </a>
+            
+                        <a onclick="DeleteCategory('${data}');" class="badge-trashed" style="cursor:pointer">
+                            Delete
                         </a>
                     </div>
                     `
@@ -25,9 +30,48 @@ function loadDataTable(url) {
             }
         ]
     });
-    $.ajax({
-        method: 'GET',
-        headers: { 'CategoryId': '70e9dfda-4982-4b88-96f9-d7d284a10cb4' },
-        url: '/home/sampleaction'
-    });
 }
+
+    
+
+    function DeleteCategory (guid)
+    {
+        Swal.fire({
+            title: 'This record gonna be deleted. Are u sure?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Category/DeleteCategory?id=' + guid,
+                    complete: function (xhr) {
+                        if (xhr.status === 200) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Record deleted successfully!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            datatable.ajax.reload();
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Something went wrong!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                    }
+                });
+                
+            }
+        })
+        
+    }
+
+

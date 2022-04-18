@@ -63,6 +63,18 @@ namespace simpleCommerce.Controllers
         {
             return Json(new { data = _catRepo.GetAll() });
         }
+
+        [HttpGet]
+        public IActionResult DeleteCategory(Guid id)
+        {
+            if(id!=null)
+            {
+                _catRepo.Remove(_catRepo.Find(id));
+                _catRepo.Save();
+                return Ok();
+            }
+            return NoContent();
+        }
         #endregion
     }
 }
