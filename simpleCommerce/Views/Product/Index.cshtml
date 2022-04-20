@@ -1,1 +1,29 @@
-﻿
+﻿@model simpleCommerce_Models.ViewModels.CreateProductVM
+@{
+    Layout="_AdminPanelLayout";
+}
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Products</h2>
+
+        <div class="container-fluid">
+            <partial name="_AddPartial" model="Model" />
+                <div class="users-table table-wrapper white-block container-fluid">
+                    <table id="categoryTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Filter Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+</main>
+
+@section Scripts{
+    <script src="~/js/productPage.js"></script>
+}

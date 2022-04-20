@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using simpleCommerce_DataAccess.Data;
 
@@ -11,9 +12,10 @@ using simpleCommerce_DataAccess.Data;
 namespace simpleCommerce_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220419202938_CategoryRequiredAddedToModel")]
+    partial class CategoryRequiredAddedToModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,15 +281,7 @@ namespace simpleCommerce_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("PropertyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Product");
                 });
@@ -317,6 +311,7 @@ namespace simpleCommerce_DataAccess.Migrations
             modelBuilder.Entity("simpleCommerce_Models.Tag", b =>
                 {
                     b.Property<Guid>("TagId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FilterName")
@@ -327,7 +322,12 @@ namespace simpleCommerce_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("TagId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Tag");
                 });
@@ -392,17 +392,6 @@ namespace simpleCommerce_DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("simpleCommerce_Models.Product", b =>
-                {
-                    b.HasOne("simpleCommerce_Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("simpleCommerce_Models.Property", b =>
                 {
                     b.HasOne("simpleCommerce_Models.Product", null)
@@ -414,9 +403,7 @@ namespace simpleCommerce_DataAccess.Migrations
                 {
                     b.HasOne("simpleCommerce_Models.Product", null)
                         .WithMany("Tags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Product", b =>

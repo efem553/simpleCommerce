@@ -1,0 +1,115 @@
+﻿@model simpleCommerce_Models.ViewModels.CreateProductVM
+
+@{
+    string action=ViewContext.RouteData.Values["Action"]==null?"Foolish Developer":(string)ViewContext.RouteData.Values["Action"];
+}
+
+<head>
+@*    <style>
+    form  { display: table;      }
+	p         { display: table-row;  }
+	label     { display: table-cell; }
+	input { display: table-cell; }
+    </style>*@
+    <style>
+    .previewImage{
+    width:20%;
+    height:20%
+    }
+    </style>
+
+
+</head>
+
+    @if (action == "Index" || action=="Add")
+    {
+        <button id="addCollapse" class="custom-btn btn-main" style="margin-left:1.3%;" >+ New</button>
+    }else if (action == "Edit")
+    {
+        <button id="addCollapse" class="custom-btn btn-main" style="margin-left:1.3%;" >+ Edit</button>
+    }
+        @if (action == "Index" || action=="Add")
+        {
+        <div id="collapseMenu" class="users-table table-wrapper white-block container-fluid" style="display:none">
+            <form asp-controller="Product" asp-action="Add" method="post" class="form-row" >
+                <div class="col-4" style="align-items:end;">
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <label asp-for="Product.Name" ></label> &nbsp;
+                            </td>
+                            <td>
+                                <input asp-for="Product.Name" />&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.Price" ></label> &nbsp;
+                            </td>
+                            <td>
+                                <input type="number" asp-for="Product.Price" />&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.IsInStock" ></label>&nbsp;
+                            </td>
+                            <td>
+                                <select asp-for="Product.IsInStock">
+                                    <option selected value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.CategoryId"></label>
+                            </td>
+                            <td>
+                                <select asp-items=@Model.CategorySelectList asp-for="Product.CategoryId"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.Description"></label>&nbsp;
+                            </td>
+                            <td>
+                                <textarea style="" asp-for="Product.Description"></textarea>&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <label asp-for="Product.PictureId"></label>
+                            </td>
+                            <td>
+                            <div id="preview" class="row">
+                            </div>
+                            <input multiple=true type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event);">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button class="custom-btn btn-main" style="margin-top:2%;" type ="submit">Save</button>
+        </form>
+        </div>
+        }
+        else if (action == "Edit")
+        {
+        <div id="collapseMenu" class="users-table table-wrapper white-block container-fluid" style="display:none">
+            <form asp-controller="Product" asp-action="Add" method="post" >
+                <label asp-for="Product.Name" ></label> &nbsp;
+                <input asp-for="Product.Name" />&nbsp;
+                <span asp-validation-for="Product.Name"/>
+                <label asp-for="Product.Price" ></label> &nbsp;
+                <input type="number" asp-for="Product.Price" />&nbsp;
+
+                <label asp-for="Product.IsInStock" ></label>&nbsp;
+                <select asp-for="Product.IsInStock">
+                    <option selected value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>&nbsp;
+                <button class="custom-btn btn-main" type ="submit">Save</button>
+        </form>
+        </div>
+        }
+    
