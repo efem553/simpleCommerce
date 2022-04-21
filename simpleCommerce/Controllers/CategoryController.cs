@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using eCommerce_Utility;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using simpleCommerce_DataAccess.Repository;
 using simpleCommerce_DataAccess.Repository.Interface;
 using simpleCommerce_Models;
@@ -12,15 +14,20 @@ namespace simpleCommerce.Controllers
         {
             _catRepo=catRepo;
         }
+
+        [Authorize(Roles = WC.AdminRole)]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = WC.AdminRole)]
         public IActionResult Add()
         {
             return View();
         }
+
+        [Authorize(Roles = WC.AdminRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Add(Category category)
@@ -33,6 +40,7 @@ namespace simpleCommerce.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = WC.AdminRole)]
         public IActionResult Edit(string id)
         {
             if (!String.IsNullOrEmpty(id))
@@ -45,6 +53,8 @@ namespace simpleCommerce.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [Authorize(Roles = WC.AdminRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Category category)
@@ -58,16 +68,18 @@ namespace simpleCommerce.Controllers
         }
 
         #region API CALLS
+        [Authorize(Roles = WC.AdminRole)]
         [HttpGet]
         public IActionResult GetCategoryList()
         {
             return Json(new { data = _catRepo.GetAll() });
         }
 
+        [Authorize(Roles = WC.AdminRole)]
         [HttpGet]
         public IActionResult DeleteCategory(Guid id)
         {
-            if(id!=null)
+            if(id!=Guid.Empty)
             {
                 _catRepo.Remove(_catRepo.Find(id));
                 _catRepo.Save();

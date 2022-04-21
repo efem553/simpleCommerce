@@ -17,6 +17,12 @@ namespace simpleCommerce_DataAccess.Repository
             _db = db;
         }
 
+        public IEnumerable<Picture> AddRange(IEnumerable<Picture> entity)
+        {
+            _db.AddRange(entity);
+            return entity;
+        }
+
         public void Update(Picture picture)
         {
             _db.Update(picture);

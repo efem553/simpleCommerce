@@ -16,12 +16,10 @@ namespace simpleCommerce_Models
         public decimal? Price { get; set; }
         public Guid CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
         public bool IsInStock { get; set; }
-        public Guid PictureId { get; set; }
-        [ForeignKey("PictureId")]
-        public List<Picture>? Pictures { get; set; }
         public Guid PropertyId { get; set; }
+        [ForeignKey("PropertyId")]
         public List<Property>? Properties  { get; set; }
         public Guid TagId { get; set; }
         [ForeignKey("TagId")]

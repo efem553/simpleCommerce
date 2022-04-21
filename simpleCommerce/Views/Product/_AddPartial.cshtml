@@ -31,7 +31,7 @@
         @if (action == "Index" || action=="Add")
         {
         <div id="collapseMenu" class="users-table table-wrapper white-block container-fluid" style="display:none">
-            <form asp-controller="Product" asp-action="Add" method="post" class="form-row" >
+            <form asp-controller="Product" asp-action="Add" method="post" enctype="multipart/form-data" class="form-row" >
                 <div class="col-4" style="align-items:end;">
                     <table style="width:100%;">
                         <tr>
@@ -79,17 +79,17 @@
                         </tr>
                         <tr>
                             <td>
-                            <label asp-for="Product.PictureId"></label>
+                            <label>Picture(s)</label>
                             </td>
                             <td>
                             <div id="preview" class="row">
                             </div>
-                            <input multiple=true type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event);">
+                            <input asp-for="Files" multiple=true type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event);">
                             </td>
                         </tr>
                     </table>
                 </div>
-                <button class="custom-btn btn-main" style="margin-top:2%;" type ="submit">Save</button>
+                <button class="custom-btn btn-main" style="margin-top:2%;" type ="submit" formmethod="post">Save</button>
         </form>
         </div>
         }
