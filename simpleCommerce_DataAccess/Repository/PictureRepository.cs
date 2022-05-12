@@ -1,11 +1,6 @@
 ﻿using simpleCommerce_DataAccess.Data;
 using simpleCommerce_DataAccess.Repository.Interface;
 using simpleCommerce_Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace simpleCommerce_DataAccess.Repository
 {
@@ -19,13 +14,13 @@ namespace simpleCommerce_DataAccess.Repository
 
         public IEnumerable<Picture> AddRange(IEnumerable<Picture> entity)
         {
-            _db.AddRange(entity);
+            _db.Picture.AddRange(entity);
             return entity;
         }
 
         public void Update(Picture picture)
         {
-            _db.Update(picture);
+            _db.Picture.Update(picture);
         }
     }
 }

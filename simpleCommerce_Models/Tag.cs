@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace simpleCommerce_Models
+﻿namespace simpleCommerce_Models
 {
     public class Tag
     {

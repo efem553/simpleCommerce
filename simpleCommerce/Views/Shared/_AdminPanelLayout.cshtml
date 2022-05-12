@@ -116,55 +116,28 @@
                     <a id="Admin-Index" asp-controller="Admin" asp-action="Index"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
                 </li>
                 <li>
-                    <a id="Product-Index" class="show-cat-btn">
-                        <span class="icon document" aria-hidden="true"></span>Posts
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
+                    <a id="Product-Index"  asp-controller="Product" asp-action="Index">
+                        <span class="icon document" aria-hidden="true"></span>
+                        Products
                     </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a asp-controller="Product" asp-action="Index">All Products</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Product" asp-action="Add">Add New Product</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a id="Category-Index" class="show-cat-btn" href="##">
-                        <span class="icon folder" aria-hidden="true"></span>Categories
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
+                    <a id="Category-Index"  asp-controller="Category" asp-action="Index">
+                        <span class="icon folder" aria-hidden="true"></span>
+                        Categories
                     </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a asp-controller="Category" asp-action="Index">All Categories</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Category" asp-action="Add">Add new Category</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a class="show-cat-btn" href="##">
-                        <span class="icon image" aria-hidden="true"></span>Media
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
+                   <a id="Tag-Index"  asp-controller="Tag" asp-action="Index">
+                        <span class="icon paper" aria-hidden="true"></span>
+                        Tags
                     </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="media-01.html">Media-01</a>
-                        </li>
-                        <li>
-                            <a href="media-02.html">Media-02</a>
-                        </li>
-                    </ul>
+                </li>
+                <li>
+                   <a id="Property-Index"  asp-controller="Property" asp-action="Index">
+                        <span class="icon paper" aria-hidden="true"></span>
+                        Properties
+                    </a>
                 </li>
                 <li>
                     <a class="show-cat-btn" href="##">
@@ -352,6 +325,7 @@
 </nav>
     <!-- ! Main -->
     @RenderBody()
+    <partial name="_Notifications"/>
     <!-- ! Footer -->
     <footer class="footer">
   <div class="container footer--flex">

@@ -19,7 +19,7 @@
 	<!-- ================ end banner area ================= -->
   
   <!--================Login Box Area =================-->
-	<section class="login_box_area section-margin">
+	<section id="login_box_area" class="login_box_area section-margin">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<div class="login_form_inner">
+					<div id="login_form_inner" class="login_form_inner">
 						<h3>Log in to enter</h3>
 						<form class="row login_form" method="post" id="contactForm" >
 							<div class="col-md-12 form-group">
@@ -45,7 +45,7 @@
                             </div>
 							<div class="col-md-12 form-group">
 								<div class="creat_account">
-									<input asp-for="Input.RememberMe" id="f-option2" name="selector">
+									<input asp-for="Input.RememberMe" id="f-option2">
 									<label for="f-option2">Keep me logged in</label>
 								</div>
 							</div>
@@ -65,4 +65,9 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+	<script>
+	 $(document).ready(function() {
+                document.getElementById('login_box_area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+	</script>
 }

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\simpleCommerce_Models\simpleCommerce_Models.csproj" />
+  </ItemGroup>
+
 </Project>

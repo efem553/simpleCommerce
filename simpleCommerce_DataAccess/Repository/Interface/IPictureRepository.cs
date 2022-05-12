@@ -1,10 +1,4 @@
-﻿using simpleCommerce_DataAccess.Data;
-using simpleCommerce_Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using simpleCommerce_Models;
 
 namespace simpleCommerce_DataAccess.Repository.Interface
 {

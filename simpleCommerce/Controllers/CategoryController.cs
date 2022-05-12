@@ -1,52 +1,50 @@
-﻿using eCommerce_Utility;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using simpleCommerce_DataAccess.Repository;
 using simpleCommerce_DataAccess.Repository.Interface;
 using simpleCommerce_Models;
+using simpleCommerce_Utility;
 
 namespace simpleCommerce.Controllers
 {
+    [Authorize(Roles = WC.AdminRole)]
     public class CategoryController : Controller
     {
         private ICategoryRepository _catRepo;
         public CategoryController(ICategoryRepository catRepo)
         {
-            _catRepo=catRepo;
+            _catRepo = catRepo;
         }
 
-        [Authorize(Roles = WC.AdminRole)]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize(Roles = WC.AdminRole)]
         public IActionResult Add()
         {
             return View();
         }
 
-        [Authorize(Roles = WC.AdminRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Add(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _catRepo.Add(category);
                 _catRepo.Save();
+                TempData[WC.Success] = "Category Created Successfully";
             }
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = WC.AdminRole)]
         public IActionResult Edit(string id)
         {
-            if (!String.IsNullOrEmpty(id))
+            Guid guid;
+            if (Guid.TryParse(id, out guid))
             {
                 Category category;
-                category = _catRepo.Find(Guid.Parse(id));
+                category = _catRepo.Find(guid);
 
                 return View("Index", category);
             }
@@ -54,7 +52,6 @@ namespace simpleCommerce.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = WC.AdminRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Category category)
@@ -63,25 +60,25 @@ namespace simpleCommerce.Controllers
             {
                 _catRepo.Update(category);
                 _catRepo.Save();
+                TempData[WC.Success] = "Category Updated Successfully";
             }
             return RedirectToAction(nameof(Index));
         }
 
         #region API CALLS
-        [Authorize(Roles = WC.AdminRole)]
         [HttpGet]
         public IActionResult GetCategoryList()
         {
             return Json(new { data = _catRepo.GetAll() });
         }
 
-        [Authorize(Roles = WC.AdminRole)]
         [HttpGet]
-        public IActionResult DeleteCategory(Guid id)
+        public IActionResult DeleteCategory(string id)
         {
-            if(id!=Guid.Empty)
+            Guid guid;
+            if (Guid.TryParse(id, out guid))
             {
-                _catRepo.Remove(_catRepo.Find(id));
+                _catRepo.Remove(_catRepo.Find(guid));
                 _catRepo.Save();
                 return Ok();
             }

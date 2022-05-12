@@ -281,11 +281,8 @@ namespace simpleCommerce_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("PropertyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("StockCount")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -294,15 +291,60 @@ namespace simpleCommerce_DataAccess.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("simpleCommerce_Models.Property", b =>
+            modelBuilder.Entity("simpleCommerce_Models.ProductProperty", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Value")
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("ProductId", "PropertyId")
+                        .IsUnique();
+
+                    b.ToTable("ProductProperty");
+                });
+
+            modelBuilder.Entity("simpleCommerce_Models.ProductTag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagId");
+
+                    b.HasIndex("ProductId", "TagId")
+                        .IsUnique();
+
+                    b.ToTable("ProductTag");
+                });
+
+            modelBuilder.Entity("simpleCommerce_Models.Property", b =>
+                {
+                    b.Property<Guid>("PropertyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PropertyId");
@@ -313,6 +355,7 @@ namespace simpleCommerce_DataAccess.Migrations
             modelBuilder.Entity("simpleCommerce_Models.Tag", b =>
                 {
                     b.Property<Guid>("TagId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FilterName")
@@ -401,29 +444,42 @@ namespace simpleCommerce_DataAccess.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("simpleCommerce_Models.Property", b =>
+            modelBuilder.Entity("simpleCommerce_Models.ProductProperty", b =>
                 {
-                    b.HasOne("simpleCommerce_Models.Product", null)
-                        .WithMany("Properties")
+                    b.HasOne("simpleCommerce_Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("simpleCommerce_Models.Property", "Property")
+                        .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Property");
                 });
 
-            modelBuilder.Entity("simpleCommerce_Models.Tag", b =>
+            modelBuilder.Entity("simpleCommerce_Models.ProductTag", b =>
                 {
-                    b.HasOne("simpleCommerce_Models.Product", null)
-                        .WithMany("Tags")
+                    b.HasOne("simpleCommerce_Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("simpleCommerce_Models.Tag", "Tag")
+                        .WithMany()
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("simpleCommerce_Models.Product", b =>
-                {
-                    b.Navigation("Properties");
+                    b.Navigation("Product");
 
-                    b.Navigation("Tags");
+                    b.Navigation("Tag");
                 });
 #pragma warning restore 612, 618
         }

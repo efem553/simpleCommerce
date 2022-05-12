@@ -1,0 +1,33 @@
+﻿@model simpleCommerce_Models.Property
+@{
+    ViewData["Title"] = "Category";
+    Layout = "~/Views/Shared/_AdminPanelLayout.cshtml";
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Properties</h2>
+
+        <div class="container-fluid">
+            <partial name="_AddPartial" model="Model" />
+                <div class="users-table table-wrapper white-block container-fluid">
+                    <table id="propertyTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>Guid</th>
+                                <th>Property Name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+</main>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    @*    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>*@
+    <script src="~/js/propertyPage.js" ></script>
+}

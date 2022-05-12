@@ -1,19 +1,31 @@
 ﻿@model simpleCommerce_Models.ViewModels.CreateProductVM
 @{
     Layout="_AdminPanelLayout";
+    string action=ViewContext.RouteData.Values["Action"]==null?"Foolish Developer":(string)ViewContext.RouteData.Values["Action"];
 }
 <main class="main users chart-page" id="skip-target">
     <div class="container">
-        <h2 class="main-title">Products</h2>
+        @Model.PropertyJSON
+        <h2 class="main-title">Products - @ViewContext.RouteData.Values["Action"]</h2>
 
         <div class="container-fluid">
+        @if (action == "Index")
+        {
             <partial name="_AddPartial" model="Model" />
+        }
+        else if (action == "Edit")
+        {
+            <partial name="_EditPartial" model="Model" />
+        }
                 <div class="users-table table-wrapper white-block container-fluid">
-                    <table id="categoryTable" class="display">
+                    <table id="productTable" class="display">
                         <thead>
                             <tr>
                                 <th>Product Name</th>
-                                <th>Filter Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>In Stock</th>
+                                <th>Stock Count</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -25,5 +37,18 @@
 </main>
 
 @section Scripts{
-    <script src="~/js/productPage.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        @if (action == "Index")
+        {
+        <script src="~/js/productPageAdd.js" asp-append-version="true" ></script>
+        }
+        else if (action == "Edit")
+        {
+        <script src="~/js/productPageEdit.js" asp-append-version="true" ></script>
+        <script>
+        $(document).ready(function () {
+         onPageLoad();
+        })
+        </script>
+        }
 }

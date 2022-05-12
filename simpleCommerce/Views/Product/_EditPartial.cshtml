@@ -1,0 +1,124 @@
+﻿@model simpleCommerce_Models.ViewModels.CreateProductVM
+
+
+<head>
+
+    <link rel="stylesheet" href="~/css/productPage.css"/>
+
+</head>
+
+        <button id="addCollapse" class="custom-btn btn-main" style="margin-left:1.3%;" >+ Edit</button>
+        <div id="collapseMenu" class="users-table table-wrapper white-block container-fluid">
+            <form id="createProductForm" asp-controller="Product" asp-action="Edit" method="post" enctype="multipart/form-data" class="form-row" >
+                <div class="col-4" style="align-items:end;">
+            <input asp-for="Product.Id" style="display:none;"/>&nbsp;
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <label asp-for="Product.Name" ></label> &nbsp;
+                            </td>
+                            <td>
+                                <input asp-for="Product.Name" />&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.Price" ></label> &nbsp;
+                            </td>
+                            <td>
+                                <input type="number" asp-for="Product.Price" />&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.IsInStock" ></label>&nbsp;
+                            </td>
+                            <td>
+                                <select asp-for="Product.IsInStock">
+                                    <option selected value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.StockCount" ></label> &nbsp;
+                            </td>
+                            <td>
+                                <input type="number" asp-for="Product.StockCount" />&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.CategoryId"></label>
+                            </td>
+                            <td>
+                                <select asp-items=@Model.CategorySelectList asp-for="Product.CategoryId"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label asp-for="Product.Description"></label>&nbsp;
+                            </td>
+                            <td>
+                                <textarea style="" asp-for="Product.Description"></textarea>&nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <label>Picture(s)</label>
+                            </td>
+                            <td>
+                            <div id="preview" class="row">
+                            </div>
+                            <input asp-for="Files" multiple=true type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event);">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="tab">
+                <button type="button" class="tablinks" onclick="openTab(event, 'Property')">Properties</button>
+                <button type="button" class="tablinks" onclick="openTab(event, 'Tag')">Tags</button>
+                </div>
+
+                <div id="Property" class="tabcontent">
+                    <input asp-for="PropertyJSON"  style="display:none">
+                    <select id="propertyCombo" asp-items="@Model.PropertySelectList" style="width:20%"></select>
+                    <input type="text" id="propValInput" placeholder="Value"/>
+                    <button class="custom-btn btn-main" style="margin-top:2%;" onclick="addRowToPropertyTable($('#Product_Id').val(),$('select[id=propertyCombo] option').filter(':selected').val(),$('#propValInput').val())" type ="button">Add</button>
+
+                    <div class="users-table table-wrapper white-block container-fluid">
+                        <table id="propertyTable" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="display:none">Id</th>
+                                    <th>Property Name</th>
+                                    <th>Value</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="Tag" class="tabcontent">
+                    <input asp-for="TagJSON" style="display:none">
+                    <select id="tagCombo" asp-items="@Model.TagSelectList" style="width:20%"></select>
+                    <button class="custom-btn btn-main" style="margin-top:2%;" onclick="addRowToTagTable($('#Product_Id').val(),$('select[id=tagCombo] option').filter(':selected').val())" type ="button">Add</button>
+
+                    <div class="users-table table-wrapper white-block container-fluid">
+                        <table id="tagTable" class="display" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="display:none">Id</th>
+                                    <th>Tag Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <button class="custom-btn btn-main" style="margin-top:2%;" type ="button" onclick="onSave();">Save</button>
+        </form>
+        </div>
+    

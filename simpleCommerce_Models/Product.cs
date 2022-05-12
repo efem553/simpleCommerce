@@ -14,15 +14,15 @@ namespace simpleCommerce_Models
 
         [Required(ErrorMessage = "Price is required for Product")]
         public decimal? Price { get; set; }
+        [Required(ErrorMessage = "Category Is Required")]
+        [Display(Name = "Category")]
         public Guid CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
+        [Display(Name = "Is In Stock")]
         public bool IsInStock { get; set; }
-        public Guid PropertyId { get; set; }
-        [ForeignKey("PropertyId")]
-        public List<Property>? Properties  { get; set; }
-        public Guid TagId { get; set; }
-        [ForeignKey("TagId")]
-        public List<Tag>? Tags { get; set; }
+        [Required(ErrorMessage = "Stock Count Is Required")]
+        [Display(Name = "Stock Count")]
+        public int StockCount { get; set; }
     }
 }

@@ -10,10 +10,21 @@ namespace simpleCommerce_DataAccess.Data
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            //Closed because when i add this i cant use id field as Primary Key.
+            //Need to find another way to add Unique Constraint to these two column.
+            //builder.Entity<ProductTag>().HasKey(x => new { x.ProductId, x.TagId });
+            base.OnModelCreating(builder);
+        }
         public DbSet<Product> Product { get; set; } = default!;
         public DbSet<Category> Category { get; set; } = default!;
+        public DbSet<ProductProperty> ProductProperty { get; set; }
+        public DbSet<Tag> Tag { get; set; } = default!;
+        public DbSet<ProductTag> ProductTag { get; set; }
         public DbSet<Picture> Picture { get; set; } = default!;
         public DbSet<Property> Property { get; set; } = default!;
-        public DbSet<Tag> Tag { get; set; } = default!;
+
     }
 }

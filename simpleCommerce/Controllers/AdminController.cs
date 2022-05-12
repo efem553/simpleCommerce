@@ -1,6 +1,6 @@
-﻿using eCommerce_Utility;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using simpleCommerce_Utility;
 
 namespace simpleCommerce.Controllers
 {

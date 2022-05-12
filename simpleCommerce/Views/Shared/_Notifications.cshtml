@@ -1,0 +1,27 @@
+﻿@using simpleCommerce_Utility
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+@if(TempData[WC.Success]!=null)
+{
+    <script type="text/javascript">
+        Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: '@TempData[WC.Success]',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+    </script>
+}
+else if(TempData[WC.Error]!=null)
+{
+    <script type="text/javascript">
+                Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: '@TempData[WC.Error]',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+    </script>
+}

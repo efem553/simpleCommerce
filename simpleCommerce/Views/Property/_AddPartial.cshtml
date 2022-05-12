@@ -1,0 +1,39 @@
+﻿@model simpleCommerce_Models.Property
+@{
+    string action=ViewContext.RouteData.Values["Action"]==null?"Foolish Developer":(string)ViewContext.RouteData.Values["Action"];
+}
+
+    @if (action == "Index")
+    {
+        <button id="addCollapse" class="custom-btn btn-main" style="margin-left:1.3%;" >+ New</button>
+    }else if (action == "Edit")
+    {
+        <button id="addCollapse" class="custom-btn btn-main" style="margin-left:1.3%;" >+ Edit</button>
+    }
+        @if (action == "Index")
+        {
+        <div id="collapseMenu" class="users-table table-wrapper white-block container-fluid" style="display:none">
+            <form asp-controller="Property" asp-action="Add" method="post" >
+                <label asp-for="Name" ></label> &nbsp;
+                <input asp-for="Name" />&nbsp;
+
+                
+                <button class="custom-btn btn-main" type ="submit">Save</button>
+        </form>
+        </div>
+        }
+        else if (action == "Edit")
+        {
+        <div id="collapseMenu" class="users-table table-wrapper white-block container-fluid" style="">
+            <form asp-controller="Property" asp-action="Edit" method="post" >
+                <input asp-for="PropertyId" style="display:none;"/>&nbsp;
+                <label asp-for="Name" ></label> &nbsp;
+                <input asp-for="Name" />&nbsp;
+                
+                <button class="custom-btn btn-main" type ="submit">Update</button>
+            </form>
+         </div>
+        }
+
+
+    
