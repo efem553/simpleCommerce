@@ -1,0 +1,119 @@
+﻿@model simpleCommerce_Models.ViewModels.ConfirmationVM
+  <!--================Order Details Area =================-->
+  <section class="order_details section-margin--small">
+    <div class="container">
+      <p class="text-center billing-alert">Thank you. Your order has been received.</p>
+      <div class="row mb-5">
+        <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+          <div class="confirmation-card">
+            <h3 class="billing-title">Order Info</h3>
+            <table class="order-rable">
+              <tr>
+                <td>Order number</td>
+                <td>: @Model.Order.OrderId</td>
+              </tr>
+              <tr>
+                <td>Date</td>
+                <td>: @Model.Order.CreationDate</td>
+              </tr>
+              <tr>
+                <td>Total</td>
+                <td>: @Model.CheckoutTotalVM.Total₺</td>
+              </tr>
+              <tr>
+                <td>Payment method</td>
+                <td>: No Payment</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+          <div class="confirmation-card">
+            <h3 class="billing-title">Billing Address</h3>
+            <table class="order-rable">
+              <tr>
+                <td>Address</td>
+                @if(!String.IsNullOrEmpty(Model.Order.AddressLine1)&&!String.IsNullOrEmpty(Model.Order.AddressLine2) )
+                {
+                    <td>: @Model.Order.AddressLine1 @Model.Order.AddressLine2 @Model.Order.Province/Turkey @Model.Order.ZipCode</td>
+                }
+                else
+                {
+                    <td>: @Model.Order.AddressLine1 @Model.Order.Province/Turkey @Model.Order.ZipCode</td>
+                }
+                
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+          <div class="confirmation-card">
+            <h3 class="billing-title">Shipping Address</h3>
+            <table class="order-rable">
+              <tr>
+                <td>Address</td>
+                @if(!String.IsNullOrEmpty(Model.Order.AddressLine1)&&!String.IsNullOrEmpty(Model.Order.AddressLine2) )
+                {
+                    <td>: @Model.Order.AddressLine1 @Model.Order.AddressLine2 @Model.Order.Province/Turkey @Model.Order.ZipCode</td>
+                }
+                else
+                {
+                    <td>: @Model.Order.AddressLine1 @Model.Order.Province/Turkey @Model.Order.ZipCode</td>
+                }
+                
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="order_details_table">
+        <h2>Order Details</h2>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+                @if(Model.CheckoutTotalVM.Items!=null && Model.CheckoutTotalVM.Items.Count()>0)
+                {
+                    @foreach (var item in Model.CheckoutTotalVM.Items)
+                    {
+                      <tr>
+                        <td>
+                          <p>@item.ProductName</p>
+                        </td>
+                        <td>
+                          <h5>x @item.Quantity</h5>
+                        </td>
+                        <td>
+                          <p>@item.LineTotal₺</p>
+                        </td>
+                      </tr>
+                    }
+                }
+              <tr>
+                <td>
+                  <h4>Total</h4>
+                </td>
+                <td>
+                  <h5></h5>
+                </td>
+                <td>
+                  <h4>@Model.CheckoutTotalVM.Total₺</h4>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--================End Order Details Area =================-->
+
+  @section Scripts{
+
+  }

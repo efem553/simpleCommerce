@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using simpleCommerce_DataAccess.Data;
 using simpleCommerce_DataAccess.Repository;
@@ -12,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+opt.UseSqlite(builder.Configuration.GetConnectionString("SqliteDatabase")));
+
+
 
 //builder.Services.ConfigureApplicationCookie(options =>
 //{
@@ -35,6 +35,11 @@ builder.Services.AddScoped<IProductTagRepository, ProductTagRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPictureRepository, PictureRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+builder.Services.AddScoped<IProvinceRepository, ProvinceRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderLineRepository, OrderLineRepository>();
 
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -59,6 +64,14 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 });
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
+
+//Calls Seeder for if Admin user doesnt exists it creates it
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    DataSeeder.Initialize(services, builder.Configuration["JsonFiles:ProvinceJson"]);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

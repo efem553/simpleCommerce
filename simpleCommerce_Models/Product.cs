@@ -9,16 +9,16 @@ namespace simpleCommerce_Models
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Name is required for Product")]
-        public string? Name { get; set; }
-        public string? Description { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         [Required(ErrorMessage = "Price is required for Product")]
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         [Required(ErrorMessage = "Category Is Required")]
         [Display(Name = "Category")]
         public Guid CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public Category? Category { get; set; }
+        public Category Category { get; set; }
         [Display(Name = "Is In Stock")]
         public bool IsInStock { get; set; }
         [Required(ErrorMessage = "Stock Count Is Required")]

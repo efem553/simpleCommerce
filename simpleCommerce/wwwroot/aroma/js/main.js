@@ -1,13 +1,14 @@
-$(function() {
+$(document).ready(function () {
+    getCartItemCount();
+});
+
+$(function () {
   "use strict";
 
   //------- Parallax -------//
-  skrollr.init({
-    forceHeight: false
-  });
-
-  //------- Active Nice Select --------//
-  $('select').niceSelect();
+  //skrollr.init({
+  //  forceHeight: false
+  //});
 
   //------- hero carousel -------//
   $(".hero-carousel").owlCarousel({
@@ -62,7 +63,8 @@ $(function() {
     autoplay:false,
     autoplayTimeout: 5000,
     loop:true,
-    nav:false,
+    nav: true,
+    navText: ["<i class='ti-arrow-left'></i>", "<i class='ti-arrow-right'></i>"],
     dots:false
   });
 
@@ -82,14 +84,15 @@ $(function() {
   });
 
   //------- Price Range slider -------//
+
   if(document.getElementById("price-range")){
   
     var nonLinearSlider = document.getElementById('price-range');
     
-    noUiSlider.create(nonLinearSlider, {
+      priceRangeSlider =noUiSlider.create(nonLinearSlider, {
         connect: true,
         behaviour: 'tap',
-        start: [ 500, 4000 ],
+        start: [ 0, 10000 ],
         range: {
             // Starting at 500, step the value by 500,
             // until 4000 is reached. From there, step by 1000.
@@ -115,5 +118,19 @@ $(function() {
   }
   
 });
+
+function getCartItemCount() {
+    $.ajax({
+        type: "GET",
+        url: '/Cart/GetCartItemCount',
+        success: function (response) {
+            $("#cartButton").html('<i class="ti-shopping-cart" ></i>');
+            $("#cartButton").append(response);
+        },
+        error: function () {
+            console.log("cant get cart items");
+        }
+    });
+}
 
 

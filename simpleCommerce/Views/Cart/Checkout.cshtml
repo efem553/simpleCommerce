@@ -1,0 +1,97 @@
+﻿@model simpleCommerce_Models.ViewModels.CheckoutVM
+  
+<!--================Checkout Area =================-->
+  <section class="checkout_area section-margin--small">
+    <div class="container">
+        <div class="billing_details">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3>Billing Details</h3>
+                    <form class="row contact_form" asp-action="Checkout" id="checkoutForm" method="post">
+                        <input type="hidden" asp-for="Order.UserId" />
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" placeholder="Name" asp-for="Order.FirstName">
+                            <span class="text-danger" asp-validation-for="Order.FirstName"></span>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" placeholder="Last Name" asp-for="Order.LastName">
+                            <span class="text-danger" asp-validation-for="Order.LastName"></span>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" placeholder="Phone Number" asp-for="Order.PhoneNumer" >
+                            <span class="text-danger" asp-validation-for="Order.PhoneNumer"></span>
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" class="form-control" placeholder="Email Address" asp-for="Order.EmailAddress">
+                            <span class="text-danger" asp-validation-for="Order.EmailAddress"></span>
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <select class="country_select">
+                                <option disabled selected value="TR">TURKEY</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" placeholder="Address Line 1" asp-for="Order.AddressLine1">
+                            <span class="text-danger" asp-validation-for="Order.AddressLine1"></span>
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <input type="text" class="form-control" placeholder="Address Line 2" asp-for="Order.AddressLine2">
+                            <span class="text-danger" asp-validation-for="Order.AddressLine2" ></span>
+                        </div>
+                        <div class="col-md-12 form-group p_star">
+                            <select class="country_select" asp-for="Order.ProvinceId" asp-items="@Model.ProvinceSelectList">
+
+                            </select>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" asp-for="Order.ZipCode" placeholder="Postcode/ZIP">
+                            <span class="text-danger" asp-validation-for="Order.ZipCode" ></span>
+                        </div>
+                        <div class="col-md-12 form-group mb-0">
+                            <div class="creat_account">
+                                <h3>Shipping Details</h3>
+                            </div>
+                            <textarea class="form-control" name="message" asp-for="Order.OrderNote" rows="1" placeholder="Order Notes"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="order_box">
+                        <h2>Your Order</h2>
+                        <ul class="list">
+                            <li><a href="#"><h4>Product <span>Total</span></h4></a></li>
+                            @foreach (var item in Model.CheckoutTotalVM.Items)
+                            {
+                            <li><a href="#">@item.ProductName <span class="middle">x @item.Quantity</span> <span class="last">@item.LineTotal₺</span></a></li>
+                            }
+                        </ul>
+                        <ul class="list list_2">
+                            <li><a href="#">Total <span>@Model.CheckoutTotalVM.Total₺</span></a></li>
+                        </ul>
+                        <div class="payment_item">
+                            <div class="radion_btn">
+                                <input type="radio" id="f-option5" name="selector">
+                                <label for="f-option5">No Payment</label>
+                                <div class="check"></div>
+                            </div>
+                            <p>We' re not selling any item for now. We'll announce it soon.</p>
+                        </div>
+                        <div class="text-center">
+                          <a class="button button-paypal" style="color:white;cursor:pointer;" onclick="submitForm();">Approve Checkout</a>
+                        </div>
+                        <div class="text-danger" asp-validation-summary="All">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+  </section>
+  <!--================End Checkout Area =================-->
+  @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/checkoutPage.js" asp-append-version="true"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+  }

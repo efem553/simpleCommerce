@@ -36,7 +36,7 @@ namespace simpleCommerce_DataAccess.Repository
             return dbSet.Find(guid);
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null, bool isTracking = true)
+        public T FirstOrDefault(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool isTracking = true)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)
@@ -54,10 +54,12 @@ namespace simpleCommerce_DataAccess.Repository
             {
                 query = query.AsNoTracking();
             }
+            
             return query.FirstOrDefault();
+
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null, bool isTracking = true)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string? includeProperties = null, bool isTracking = true)
         {
             IQueryable<T> query = dbSet;
             if (filter != null)

@@ -23,6 +23,17 @@ namespace simpleCommerce_Utility
             public string? name { get; set; }
             public Guid? button { get; set; }
         }
+        public class CartItemJSON
+        {
+            public Guid cartItemId { get; set; }
+            public int quantity { get; set; }
+        }
+
+        public class ProvinceJSON
+        {
+            public string Id { get; set; }
+            public String Province { get; set; }
+        }
 
 
         public static IList<ProductProperty> ConvertToProductProperty (Guid productId,string propertyJSON)
@@ -64,7 +75,49 @@ namespace simpleCommerce_Utility
             return productTags;
         }
 
+        public static List<CartItemJSON> ConvertToCartItem(string cartItemsJSON)
+        {
+            List<CartItemJSON> cartItems = new List<CartItemJSON>();
+            if (!String.IsNullOrEmpty(cartItemsJSON))
+            {
+                var serializedCartItems = JsonSerializer.Deserialize<List<CartItemJSON>>(cartItemsJSON);
+                if (serializedCartItems!=null)
+                {                
+                    foreach (var item in serializedCartItems)
+                    {
+                        cartItems.Add(new CartItemJSON
+                        {
+                            cartItemId=item.cartItemId,
+                            quantity=item.quantity
+                        });
 
+                    }
+                }
+            }
+            return cartItems;
+        }
 
+        public static List<Province> ConvertToProvinceModel(string provinceJSON)
+        {
+            List<Province> provinces= new List<Province>();
+            if (!String.IsNullOrEmpty(provinceJSON))
+            {
+                var serializedCartItems = JsonSerializer.Deserialize<List<Province>>(provinceJSON);
+                if (serializedCartItems != null)
+                {
+                    foreach (var item in serializedCartItems)
+                    {
+                        provinces.Add(new Province
+                        {
+                            Id = item.Id,
+                            Name = item.Name
+                        });
+
+                    }
+                }
+            }
+            return provinces;
+        }
+        
     }
 }

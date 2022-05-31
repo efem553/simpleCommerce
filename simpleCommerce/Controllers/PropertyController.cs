@@ -21,6 +21,7 @@ namespace simpleCommerce.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Add(Property property)
         {
             if (ModelState.IsValid)
@@ -36,6 +37,7 @@ namespace simpleCommerce.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Update(Property property)
         {
             if (ModelState.IsValid)

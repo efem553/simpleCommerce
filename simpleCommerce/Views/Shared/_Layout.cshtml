@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Aroma Shop - Login</title>
-	<link rel="icon" href="img/Fevicon.png" type="image/png">
+	<link rel="icon" href="~/faviconegemfa.ico" type="image/png">
 	<link rel="stylesheet" href="~/aroma/vendors/bootstrap/bootstrap.min.css">
 	<link rel="stylesheet" href="~/aroma/vendors/fontawesome/css/all.min.css">
 	<link rel="stylesheet" href="~/aroma/vendors/themify-icons/themify-icons.css">
@@ -26,7 +26,7 @@
 	  <partial name="_CookieConsentPartial" />
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-          <a class="navbar-brand logo_h" href="index.html"><img src="img/logo.png" alt=""></a>
+          <a class="navbar-brand logo_h" asp-controller="Home" asp-action="Index"><img style="width:50px;height:auto;" src="~/img/simpleCommerceIcon.png" alt=""></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="icon-bar"></span>
@@ -72,8 +72,15 @@
               
             </ul>
 			<div class="main-nav-list row">
-              <a href="#" class="nav-link mx-2"><i class="ti-shopping-cart"></i></a>
-			</div>
+				@if (User.Identity.IsAuthenticated)
+				{
+					<a asp-controller="Cart" asp-action="Index" id="cartButton" class=" button nav-link mx-2"><i class="ti-shopping-cart"></i> </a>
+				}
+				else
+				{
+					<a asp-area="Identity" asp-page="/Account/Login" id="cartButton" class="nav-link mx-2"><i class="ti-shopping-cart"></i></a>		
+				}
+						</div>
             <div class="main-nav-end">
 
               <partial name="_LoginPartial"/>
@@ -188,11 +195,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <script src="~/aroma/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="~/aroma/vendors/skrollr.min.js"></script>
   <script src="~/aroma/vendors/owl-carousel/owl.carousel.min.js"></script>
-  <script src="~/aroma/vendors/nice-select/jquery.nice-select.min.js"></script>
   <script src="~/aroma/vendors/jquery.ajaxchimp.min.js"></script>
-  <script src="~/aroma/vendors/mail-script.js"></script>
-  <script src="~/aroma/js/main.js"></script>
+  <script src="~/aroma/vendors/mail-script.js" ></script>
+  <script src="~/aroma/js/main.js" asp-append-version="true"></script>
 
-      @await RenderSectionAsync("Scripts", required: false)
+      @await RenderSectionAsync("Scripts", required: true)
 </body>
 </html>

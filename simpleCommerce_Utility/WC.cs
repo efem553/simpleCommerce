@@ -16,5 +16,7 @@
         public const string Success = "Success";
 
         public const string Error = "Error";
+
+        public const string NoImageFilePath = @"\img\no-image.jpg";
     }
 }

@@ -7,5 +7,7 @@ namespace simpleCommerce_DataAccess.Repository.Interface
         void Update(Picture picture);
 
         IEnumerable<Picture> AddRange(IEnumerable<Picture> entity);
+
+        public IQueryable<Picture> GetAllQuery();
     }
 }

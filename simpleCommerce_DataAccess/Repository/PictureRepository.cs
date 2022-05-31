@@ -22,5 +22,11 @@ namespace simpleCommerce_DataAccess.Repository
         {
             _db.Picture.Update(picture);
         }
+        public IQueryable<Picture> GetAllQuery()
+        {
+            IQueryable<Picture> query = _db.Set<Picture>();
+
+            return query;
+        }
     }
 }

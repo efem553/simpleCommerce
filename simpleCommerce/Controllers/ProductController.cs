@@ -5,29 +5,30 @@ using simpleCommerce_DataAccess.Repository.Interface;
 using simpleCommerce_Models;
 using simpleCommerce_Models.ViewModels;
 using simpleCommerce_Utility;
-using System.Text.Json;
 
 namespace simpleCommerce.Controllers
 {
     [Authorize(Roles = WC.AdminRole)]
     public class ProductController : Controller
     {
-        private IProductRepository  _prodRepo;
-        private ICategoryRepository _catRepo;
-        private IPictureRepository  _pictRepo;
-        private IPropertyRepository _propRepo;
-        private ITagRepository      _tagRepo;
-        private IProductPropertyRepository _productPropertyRepo;
-        private IProductTagRepository _productTagRepo;
-        public ProductController(IProductRepository prodRepo, ICategoryRepository catRepo, IPictureRepository pictRepo, IPropertyRepository propRepo, ITagRepository tagRepo, IProductPropertyRepository productPropertyRepo, IProductTagRepository productTagRepo)
+        private readonly IProductRepository _prodRepo;
+        private readonly ICategoryRepository _catRepo;
+        private readonly IPictureRepository _pictRepo;
+        private readonly IPropertyRepository _propRepo;
+        private readonly ITagRepository _tagRepo;
+        private readonly IProductPropertyRepository _productPropertyRepo;
+        private readonly IProductTagRepository _productTagRepo;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IProductRepository prodRepo, ICategoryRepository catRepo, IPictureRepository pictRepo, IPropertyRepository propRepo, ITagRepository tagRepo, IProductPropertyRepository productPropertyRepo, IProductTagRepository productTagRepo, IWebHostEnvironment webHostEnvironment)
         {
-            _prodRepo   = prodRepo;
-            _catRepo    = catRepo;
-            _pictRepo   = pictRepo;
-            _propRepo   = propRepo;
-            _tagRepo    = tagRepo;
+            _prodRepo = prodRepo;
+            _catRepo = catRepo;
+            _pictRepo = pictRepo;
+            _propRepo = propRepo;
+            _tagRepo = tagRepo;
             _productPropertyRepo = productPropertyRepo;
             _productTagRepo = productTagRepo;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -43,10 +44,10 @@ namespace simpleCommerce.Controllers
                 Value = Convert.ToString(x.PropertyId)
             }).OrderBy(x => x.Text);
 
-            createProductVM.TagSelectList = _tagRepo.GetAll().Select(x=> new SelectListItem
+            createProductVM.TagSelectList = _tagRepo.GetAll().Select(x => new SelectListItem
             {
-                Text=x.Name,
-                Value=Convert.ToString(x.TagId)
+                Text = x.Name,
+                Value = Convert.ToString(x.TagId)
             }).OrderBy(x => x.Text);
             return View(createProductVM);
         }
@@ -56,12 +57,15 @@ namespace simpleCommerce.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Add(CreateProductVM productVM)
         {
+            ModelState.Remove("Product.Category");
             if (ModelState.IsValid)
             {
+                if (productVM.Product != null)
+                {
+                    _prodRepo.Add(productVM.Product);
+                    _prodRepo.Save();
+                }
 
-
-                _prodRepo.Add(productVM.Product);
-                _prodRepo.Save();
 
 
                 if (Request.Form.Files.Count() > 0)
@@ -69,12 +73,17 @@ namespace simpleCommerce.Controllers
                     List<Picture> pictureList = new List<Picture>();
                     foreach (var file in Request.Form.Files)
                     {
-                        byte[] imageBase64Data;
-
+                        string imageBase64Data;
+                        string contentType;
+                        FileInfo fi = new FileInfo(file.Name);
                         MemoryStream ms = new MemoryStream();
                         file.CopyTo(ms);
-                        imageBase64Data = ms.ToArray();
-
+                        imageBase64Data = Convert.ToBase64String(ms.ToArray());
+                        contentType = string.Format("data:image/{0};base64,", file.ContentType.Split("/")[1]);
+                        if (!String.IsNullOrEmpty(contentType) || !String.IsNullOrEmpty(imageBase64Data))
+                        {
+                            imageBase64Data = contentType + imageBase64Data;
+                        }
                         ms.Close();
                         ms.Dispose();
                         pictureList.Add(new Picture
@@ -87,11 +96,43 @@ namespace simpleCommerce.Controllers
                     }
                     _pictRepo.AddRange(pictureList);
                     _pictRepo.Save();
-                    TempData[WC.Success] = "Product Created Successfully";
+
                 }
-                if(!string.IsNullOrEmpty(productVM.PropertyJSON))
+                else
                 {
-                    IList<ProductProperty> productProperties= JsonObjects.ConvertToProductProperty(productVM.Product.Id, productVM.PropertyJSON);
+                    string webRootPath = _webHostEnvironment.WebRootPath;
+                    string finalImagePath;
+                    finalImagePath = webRootPath + WC.NoImageFilePath;
+                    string imageBase64;
+                    string imageExtension;
+                    if (!String.IsNullOrEmpty(finalImagePath))
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        using (FileStream file = new FileStream(finalImagePath, FileMode.Open, FileAccess.Read))
+                        {
+                            byte[] bytes = new byte[file.Length];
+                            file.Read(bytes, 0, (int)file.Length);
+                            ms.Write(bytes, 0, (int)file.Length);
+                            imageBase64 = Convert.ToBase64String(ms.ToArray());
+                            imageExtension = String.Format("data:image/{0};base64,", Path.GetExtension(finalImagePath).Split(".")[1]);
+                        }
+                        if (!String.IsNullOrEmpty(imageBase64) || !String.IsNullOrEmpty(imageExtension))
+                        {
+                            _pictRepo.Add(
+                                new Picture
+                                {
+                                    PictureId = Guid.NewGuid(),
+                                    ProductId = productVM.Product.Id,
+                                    ImageData = imageExtension + imageBase64
+                                });
+                            _pictRepo.Save();
+                        }
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(productVM.PropertyJSON))
+                {
+                    IList<ProductProperty> productProperties = JsonObjects.ConvertToProductProperty(productVM.Product.Id, productVM.PropertyJSON);
                     _productPropertyRepo.AddRange(productProperties);
                     _productPropertyRepo.Save();
                 }
@@ -101,6 +142,7 @@ namespace simpleCommerce.Controllers
                     _productTagRepo.AddRange(productTags);
                     _productTagRepo.Save();
                 }
+                TempData[WC.Success] = "Product Created Successfully";
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -114,7 +156,7 @@ namespace simpleCommerce.Controllers
         public IActionResult Edit(Guid id)
         {
             Guid productId = id;
-            if (productId!=Guid.Empty)
+            if (productId != Guid.Empty)
             {
                 CreateProductVM createProductVM = new CreateProductVM();
                 createProductVM.Product = _prodRepo.Find(productId);
@@ -143,8 +185,10 @@ namespace simpleCommerce.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(CreateProductVM createProductVM)
         {
+            ModelState.Remove("Product.Category");
             if (createProductVM.Product.Id != Guid.Empty)
             {
                 if (ModelState.IsValid)
@@ -157,23 +201,33 @@ namespace simpleCommerce.Controllers
                     if (Request.Form.Files.Count() > 0)
                     {
                         _pictRepo.RemoveRange(_pictRepo.GetAll(x => x.ProductId == createProductVM.Product.Id));
-                        _pictRepo.Save();
+
                         List<Picture> pictureList = new List<Picture>();
                         foreach (var file in Request.Form.Files)
                         {
-                            byte[] imageBase64Data;
+                            string imageBase64Data;
 
                             MemoryStream ms = new MemoryStream();
                             file.CopyTo(ms);
-                            imageBase64Data = ms.ToArray();
-
+                            imageBase64Data = Convert.ToBase64String(ms.ToArray());
+                            string contentType = string.Format("data:image/{0};base64,", file.ContentType.Split("/")[1]);
+                            if (!String.IsNullOrEmpty(contentType) || !String.IsNullOrEmpty(imageBase64Data))
+                            {
+                                imageBase64Data = contentType + imageBase64Data;
+                            }
+                            else
+                            {
+                                TempData["Error"] = "Something went wrong while updating Product";
+                                break;
+                            }
                             ms.Close();
                             ms.Dispose();
                             pictureList.Add(new Picture
                             {
                                 PictureId = Guid.NewGuid(),
                                 ProductId = createProductVM.Product.Id,
-                                ImageData = imageBase64Data
+                                ImageData = imageBase64Data,
+
                             });
 
                         }
@@ -219,17 +273,17 @@ namespace simpleCommerce.Controllers
             if (Guid.TryParse(id, out productId))
             {
                 List<JsonObjects.PropertyJSON> propertyJSON = new List<JsonObjects.PropertyJSON>();
-                foreach (var item in _productPropertyRepo.GetAll(filter:x => x.ProductId == productId,includeProperties:"Property"))
+                foreach (var item in _productPropertyRepo.GetAll(filter: x => x.ProductId == productId, includeProperties: "Property"))
                 {
                     propertyJSON.Add(new JsonObjects.PropertyJSON
                     {
                         propertyId = item.Property.PropertyId,
                         name = item.Property.Name,
                         value = item.Value,
-                        button=item.Id
+                        button = item.Id
                     });
                 }
-                return Json(new {data= propertyJSON });
+                return Json(new { data = propertyJSON });
             }
             else
             {
@@ -245,16 +299,16 @@ namespace simpleCommerce.Controllers
             if (Guid.TryParse(id, out productId))
             {
                 List<JsonObjects.TagJSON> tagJSON = new List<JsonObjects.TagJSON>();
-                foreach (var item in _productTagRepo.GetAll(filter:x => x.ProductId == productId,includeProperties:"Tag"))
+                foreach (var item in _productTagRepo.GetAll(filter: x => x.ProductId == productId, includeProperties: "Tag"))
                 {
                     tagJSON.Add(new JsonObjects.TagJSON
                     {
-                        tagId=item.TagId,
-                        name=item.Tag.Name,
+                        tagId = item.TagId,
+                        name = item.Tag.Name,
                         button = item.Id
                     });
                 }
-                return Json(new {data= tagJSON });
+                return Json(new { data = tagJSON });
             }
             else
             {
@@ -290,17 +344,17 @@ namespace simpleCommerce.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddProductTag(string productId,string tagId)
+        public IActionResult AddProductTag(string productId, string tagId)
         {
-            Guid gProductId= new Guid();
-            Guid gTagId= new Guid();
+            Guid gProductId = new Guid();
+            Guid gTagId = new Guid();
             if (Guid.TryParse(productId, out gProductId) && Guid.TryParse(tagId, out gTagId))
             {
                 ProductTag productTag = new ProductTag
                 {
-                    Id=Guid.NewGuid(),
-                    TagId=gTagId,
-                    ProductId=gProductId,
+                    Id = Guid.NewGuid(),
+                    TagId = gTagId,
+                    ProductId = gProductId,
                 };
                 _productTagRepo.Add(productTag);
                 _productTagRepo.Save();
@@ -310,7 +364,7 @@ namespace simpleCommerce.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddProductProperty(string productId, string propertyId,string value)
+        public IActionResult AddProductProperty(string productId, string propertyId, string value)
         {
             Guid gProductId = new Guid();
             Guid gPropertyId = new Guid();
@@ -319,9 +373,9 @@ namespace simpleCommerce.Controllers
                 ProductProperty productProperty = new ProductProperty
                 {
                     Id = Guid.NewGuid(),
-                    PropertyId=gPropertyId,
+                    PropertyId = gPropertyId,
                     ProductId = gProductId,
-                    Value=value
+                    Value = value
                 };
                 _productPropertyRepo.Add(productProperty);
                 _productPropertyRepo.Save();

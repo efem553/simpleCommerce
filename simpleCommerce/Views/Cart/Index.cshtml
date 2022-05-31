@@ -1,0 +1,128 @@
+﻿@model simpleCommerce_Models.ViewModels.CartVM
+<!--================Cart Area =================-->
+  <section class="cart_area">
+      <div class="container">
+          <div class="cart_inner">
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th scope="col">Product</th>
+                              <th scope="col">Price</th>
+                              <th scope="col">Quantity</th>
+                              <th scope="col">Total</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if(Model==null || Model.CartItems.Count()==0)
+                        {
+                            <tr>
+                                <td colspan=4>
+                                    There is no item in your Cart
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <form method="post" asp-controller="Cart" asp-action="Update">
+                            @foreach (var item in Model.CartItems)
+                              {    
+                              <tr>
+                                  <td>
+                                      <div class="media">
+                                          <div class="d-flex">
+                                              <img style="width:150px;height:auto;" src="@item.Picture" alt="">
+                                          </div>
+                                          <div class="media-body">
+                                              <p>@item.ProductName</p>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <h5>@item.Price₺</h5>
+                                  </td>
+                                  <td>
+                                      <div class="product_count">
+                                          <input type="number" name="qty" id="@item.CartItemId" disabled maxlength="5" min=0 max=9999 value="@item.Quantity" title="Quantity:"
+                                              class="input-text qty">
+                                          <button onclick="var result = document.getElementById('@item.CartItemId'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                              class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                                          <button onclick="var result = document.getElementById('@item.CartItemId'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                              class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <h5>@item.LineTotal₺</h5>
+                                  </td>
+                              </tr>
+                              }
+                              </form>
+                          }
+                          <!--update cart line-->
+                          <tr class="bottom_button">
+                              <td>
+                                  <a class="button" id="updateCartButton" onclick="sendJsonCartItems();" style="cursor:pointer;">Update Cart</a>
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                          </tr>
+                          <!--Total cart--> 
+                          <tr>
+                              <td>
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+                                  <h5>Subtotal</h5>
+                              </td>
+                              <td>
+                                  @if(Model!=null)
+                                  {
+                                  <h5>@Model.Subtotal₺</h5>
+                                  }
+                              </td>
+                          </tr>
+                          <!--cont. shopping or go to checkout-->
+                          <tr class="out_button_area">
+                              <td class="d-none-l">
+
+                              </td>
+                              <td class="">
+
+                              </td>
+
+                              <td colspan=2>
+                                  <div class="checkout_btn_inner d-flex align-items-center">
+                                      <a class="gray_btn" asp-controller="Home" asp-action="Index">Continue Shopping</a>
+                                    @if (Model != null)
+                                    {
+                                        <a class="primary-btn ml-2" style="width:fit-content !important;" asp-action="ProceedToCheckOut">Proceed to checkout</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="primary-btn ml-2 disabled"  href="#">Proceed to checkout</a>
+                                    }
+                                </div>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!--================End Cart Area =================-->
+
+ @section Scripts
+ {
+     <script src="~/js/cartPage.js" asp-append-version="true"></script>
+ }
