@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using simpleCommerce_DataAccess.Data;
 
@@ -10,9 +11,10 @@ using simpleCommerce_DataAccess.Data;
 namespace simpleCommerce_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220602120222_AboutModelAndFacultyLogoModelsAreAdded")]
+    partial class AboutModelAndFacultyLogoModelsAreAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -229,7 +231,20 @@ namespace simpleCommerce_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Article2Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Article2Header")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Article2LogoBase64")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("BaseIconBase64")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("StoreName")
@@ -238,7 +253,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasKey("AboutArticleId");
 
-                    b.ToTable("About", (string)null);
+                    b.ToTable("About");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Cart", b =>
@@ -255,7 +270,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cart", (string)null);
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.CartItem", b =>
@@ -279,7 +294,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartItem", (string)null);
+                    b.ToTable("CartItem");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Category", b =>
@@ -298,7 +313,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.FacultyLogo", b =>
@@ -322,7 +337,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasIndex("AboutArticleId");
 
-                    b.ToTable("FacultyLogo", (string)null);
+                    b.ToTable("FacultyLogo");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Order", b =>
@@ -377,7 +392,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.OrderLine", b =>
@@ -408,7 +423,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderLine", (string)null);
+                    b.ToTable("OrderLine");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Picture", b =>
@@ -428,7 +443,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Picture", (string)null);
+                    b.ToTable("Picture");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Product", b =>
@@ -461,7 +476,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.ProductProperty", b =>
@@ -486,7 +501,7 @@ namespace simpleCommerce_DataAccess.Migrations
                     b.HasIndex("ProductId", "PropertyId")
                         .IsUnique();
 
-                    b.ToTable("ProductProperty", (string)null);
+                    b.ToTable("ProductProperty");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.ProductTag", b =>
@@ -508,7 +523,7 @@ namespace simpleCommerce_DataAccess.Migrations
                     b.HasIndex("ProductId", "TagId")
                         .IsUnique();
 
-                    b.ToTable("ProductTag", (string)null);
+                    b.ToTable("ProductTag");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Property", b =>
@@ -522,7 +537,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasKey("PropertyId");
 
-                    b.ToTable("Property", (string)null);
+                    b.ToTable("Property");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Province", b =>
@@ -537,7 +552,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Province", (string)null);
+                    b.ToTable("Province");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.Tag", b =>
@@ -556,7 +571,7 @@ namespace simpleCommerce_DataAccess.Migrations
 
                     b.HasKey("TagId");
 
-                    b.ToTable("Tag", (string)null);
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("simpleCommerce_Models.ApplicationUser", b =>

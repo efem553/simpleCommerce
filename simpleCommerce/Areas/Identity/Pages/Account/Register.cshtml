@@ -36,6 +36,14 @@
 				<div class="login_form_inner register_form_inner">
 					<h3>Create an account</h3>
 					<form class="row login_form" method="post">
+						<div class="col-md-6 form-group">
+							<input asp-for="Input.Name" class="form-control" placeholder="Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'">
+							<span asp-validation-for="Input.Name" class="text-danger"></span>
+						</div>
+						<div class="col-md-6 form-group">
+							<input asp-for="Input.Surname" class="form-control" placeholder="Surname" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Surname'">
+							<span asp-validation-for="Input.Surname" class="text-danger"></span>
+						</div>
 						<div class="col-md-12 form-group">
 							<input asp-for="Input.Email" class="form-control" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
 							<span asp-validation-for="Input.Email" class="text-danger"></span>

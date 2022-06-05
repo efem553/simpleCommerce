@@ -1,0 +1,51 @@
+﻿@model simpleCommerce_Models.ViewModels.AboutVM
+
+	<!-- ================ category section start ================= -->		  
+  <section class="section-margin--small mb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-14 col-lg-13 col-md-12">
+          <!--================ Start About Us Area =================-->
+          <div class="row blog_details">
+            <img class="rounded-circle mx-auto" style="width: 250px;height: 250px;" src="@Model.About.BaseIconBase64" alt="">
+            <h1 class="mx-auto text-center" style="align-self: center;">@Model.About.StoreName</h1>
+          </div>
+          <div class="row my-2">
+            <h2 style="padding-top:3%;align-self: center;">@Model.About.Article1Header</h2>
+            <br /><p style="padding-top:3%">@Model.About.Article1Content</p>
+          </div>
+          <!--================ End About Us Area =================-->
+
+          <div class="row my-2">
+            <h2 class="mx-3 text-center" style="align-self: center;">Tasarımı Bulunan Fakülteler</h2>
+          </div>
+          <!-- Start Best Seller -->
+          <section class="lattest-product-area pb-40 category-list" style="padding-top:3%;">
+            <div class="row">
+                @foreach (var item in Model.FacultyLogos)
+                {
+              <div class="col-md-5 col-lg-3">
+                <div class="card text-center card-product">
+                  <div class="card-product__img">
+                    <img class="card-img" src="@item.LogoBase64" alt="@item.FacultyName">
+                    <ul class="card-product__imgOverlay">
+                      <li>@item.FacultyName</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+                }
+            </div>
+          </section>
+          <!-- End Best Seller -->
+        </div>
+      </div>
+    </div>
+  </section>
+	<!-- ================ category section end ================= -->		  
+
+
+@section Scripts
+{
+
+}

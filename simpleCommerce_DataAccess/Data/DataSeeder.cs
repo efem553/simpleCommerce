@@ -32,8 +32,10 @@ namespace simpleCommerce_DataAccess.Data
             }
 
 
-            var userModel = new IdentityUser
+            var userModel = new ApplicationUser
             {
+                Name="Efe",
+                Surname="BALTACI",
                 Email = "baltaciefe@outlook.com",
                 NormalizedEmail = "BALTACIEFE@OUTLOOK.COM",
                 EmailConfirmed = true,
@@ -41,20 +43,20 @@ namespace simpleCommerce_DataAccess.Data
             };
 
 
-            if (!context.Users.Any(u => u.UserName == userModel.UserName))
+            if (!context.Users.Any(u => u.Email == userModel.Email))
             {
-                var user =  Activator.CreateInstance<IdentityUser>();
+                var user =  Activator.CreateInstance<ApplicationUser>();
                 UserManager<IdentityUser> _userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
                 var _userStore = new UserStore<IdentityUser>(context);
                 var _emailStore = (IUserEmailStore<IdentityUser>)_userStore;
-                await _userStore.SetUserNameAsync(user, userModel.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, userModel.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(userModel, userModel.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(userModel, userModel.Email, CancellationToken.None);
 
-                var result =await _userManager.CreateAsync(user, "Temp1234*");
-
+                var result =await _userManager.CreateAsync(userModel, "Temp1234*");
+                await AssignRoles(serviceProvider, userModel.Email, roles);
             }
 
-            await AssignRoles(serviceProvider, userModel.Email, roles);
+            
 
             if (context.Province.Count() != 81)
             {

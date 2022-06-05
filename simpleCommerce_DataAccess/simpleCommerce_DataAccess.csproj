@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\NewFolder\**" />
+    <EmbeddedResource Remove="Data\NewFolder\**" />
+    <None Remove="Data\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
@@ -18,10 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\simpleCommerce_Models\simpleCommerce_Models.csproj" />
     <ProjectReference Include="..\simpleCommerce_Utility\simpleCommerce_Utility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\NewFolder\" />
   </ItemGroup>
 
 </Project>

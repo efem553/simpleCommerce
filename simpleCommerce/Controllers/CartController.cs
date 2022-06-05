@@ -21,10 +21,10 @@ namespace simpleCommerce.Controllers
         private readonly IOrderRepository _orderRepo;
         private readonly IOrderLineRepository _orderLineRepo;
         private readonly IProvinceRepository _provinceRepo;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
 
-        public CartController(ICartRepository cartRepo, ICartItemRepository cartItemRepo, IProductRepository prodRepo, IPictureRepository pictRepo, IOrderRepository orderRepo, IOrderLineRepository orderLineRepo, IProvinceRepository provinceRepo, UserManager<IdentityUser> userManager)
+        public CartController(ICartRepository cartRepo, ICartItemRepository cartItemRepo, IProductRepository prodRepo, IPictureRepository pictRepo, IOrderRepository orderRepo, IOrderLineRepository orderLineRepo, IProvinceRepository provinceRepo, UserManager<ApplicationUser> userManager)
         {
             _cartRepo = cartRepo;
             _cartItemRepo = cartItemRepo;

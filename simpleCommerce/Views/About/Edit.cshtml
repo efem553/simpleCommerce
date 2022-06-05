@@ -1,0 +1,76 @@
+﻿@model simpleCommerce_Models.ViewModels.UpdateAboutArticleVM
+@{
+    Layout = "_AdminPanelLayout";
+}
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        
+        <h2 class="main-title">About - @ViewContext.RouteData.Values["Action"]</h2>
+
+        <div class="users-table table-wrapper white-block container-fluid" style="">
+            <form id="createAboutArticleForm" asp-controller="About" asp-action="Edit" method="post" enctype="multipart/form-data" class="form-row" >
+                <input hidden asp-for="About.AboutArticleId"/>
+                            <div class="col-4" style="align-items:end;">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td>
+                                            <label asp-for="About.StoreName" ></label> &nbsp;
+                                        </td>
+                                        <td>
+                                            <input asp-for="About.StoreName" />&nbsp;
+                                             <span style="color:red;" asp-validation-for="About.StoreName"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        <label>Store Logo</label>
+                                        </td>
+                                        <td>
+                                        <div id="preview-store-logo" class="row">
+                                        </div>
+                                        <input asp-for="StoreLogoFile" multiple=false type="file" id="file-ip-store" accept="image/*" onchange="showPreview(event,'preview-store-logo');">
+                                        <span style="color:red;" asp-validation-for="StoreLogoFile"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label asp-for="About.Article1Header" ></label> &nbsp;
+                                        </td>
+                                        <td>
+                                            <input asp-for="About.Article1Header" />&nbsp;
+                                            <span style="color:red;" asp-validation-for="About.Article1Header"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label asp-for="About.Article1Content" ></label> &nbsp;
+                                        </td>
+                                        <td>
+                                            <textarea rows="11" cols="70" asp-for="About.Article1Content"></textarea>&nbsp;
+                                            <span style="color:red;" asp-validation-for="About.Article1Content"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        <label>Faculty Logo(s)</label>
+                                        </td>
+                                        <td>
+                                        <div id="preview-faculty-logos" class="row">
+                                        </div>
+                                        <input asp-for="FacultyLogoFiles" multiple=true type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event,'preview-faculty-logos');">
+                                        <span style="color:red;" asp-validation-for="FacultyLogoFiles"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <button class="custom-btn btn-main" style="margin-top:2%;" type ="button" onclick="onSave();">Save</button>
+                    </form>
+        </div>
+    </div>
+</main>
+@section Scripts{
+    <script src="~/js/aboutArticleAdd.js" asp-append-version="true" ></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+}

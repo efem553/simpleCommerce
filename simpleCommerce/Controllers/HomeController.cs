@@ -229,6 +229,7 @@ namespace simpleCommerce.Controllers
             TempData[WC.Error] = "Bad Request";
             return RedirectToAction("Index", "Home");
         }
+
         public IActionResult Privacy()
         {
             return View();

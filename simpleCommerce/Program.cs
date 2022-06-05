@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using simpleCommerce_DataAccess.Data;
 using simpleCommerce_DataAccess.Repository;
 using simpleCommerce_DataAccess.Repository.Interface;
+using simpleCommerce_Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,11 +41,14 @@ builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 builder.Services.AddScoped<IProvinceRepository, ProvinceRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderLineRepository, OrderLineRepository>();
+builder.Services.AddScoped<IAboutRepository, AboutRepository>();
+builder.Services.AddScoped<IFacultyLogoRepository, FacultyLogoRepository>();
 
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders().AddDefaultUI()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession(Options =>
@@ -70,6 +74,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
+    //There givin Provinces JSON file path to seed if there is not.
     DataSeeder.Initialize(services, builder.Configuration["JsonFiles:ProvinceJson"]);
 }
 
