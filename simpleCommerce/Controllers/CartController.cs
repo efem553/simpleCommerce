@@ -11,7 +11,7 @@ using static simpleCommerce_Utility.JsonObjects;
 
 namespace simpleCommerce.Controllers
 {
-    [Authorize(Roles = WC.AdminRole)]
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ICartRepository _cartRepo;
